@@ -25,7 +25,7 @@ function showCard(e) {
         cardDescription = document.createElement('p'),
         cardImg = document.createElement('img'),
         cardLinkSource = document.createElement('a');
-    wrap.className ='wrap';
+    wrap.className = 'wrap';
     cardImg.setAttribute("src", img); //cardImg.src = img;
     cardImg.setAttribute("alt", title); //cardImg.alt = title;
     cardTitle.innerText = title;
@@ -36,5 +36,6 @@ function showCard(e) {
     document.body.prepend(wrap);
 }
 
-let btn = document.querySelector('button');
-btn.addEventListener('click', showCard);
+let btnAdd = document.getElementById('add'),
+    btnRemove = document.querySelector('remove');
+btnAdd.addEventListener('click', showCard);

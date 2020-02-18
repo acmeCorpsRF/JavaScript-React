@@ -24,18 +24,34 @@ function showCard(e) {
         cardTitle = document.createElement('h1'),
         cardDescription = document.createElement('p'),
         cardImg = document.createElement('img'),
-        cardLinkSource = document.createElement('a');
+        cardLinkSource = document.createElement('a'),
+        btnRemove = document.createElement('button');
     wrap.className = 'wrap';
+    btnRemove.classList.add('remove');
+    btnRemove.innerHTML = "&times;";
+    btnRemove.addEventListener('click', removeThisCard);
     cardImg.setAttribute("src", img); //cardImg.src = img;
     cardImg.setAttribute("alt", title); //cardImg.alt = title;
     cardTitle.innerText = title;
     cardDescription.innerText = description;
-    cardLinkSource.setAttribute("href", linkSource) //cardLinkSource.href = linkSource;
+    cardLinkSource.setAttribute("href", linkSource); //cardLinkSource.href = linkSource;
     cardLinkSource.prepend(cardTitle);
-    wrap.append(cardImg, cardLinkSource, cardDescription);
+    wrap.append(btnRemove, cardImg, cardLinkSource, cardDescription);
     document.body.prepend(wrap);
 }
 
+function removeCards() {
+    let cards = document.querySelectorAll('.wrap');
+    cards.forEach(card => {
+        card.remove();
+    })
+}
+
+function removeThisCard() {
+    this.parentNode.remove();
+}
+
 let btnAdd = document.getElementById('add'),
-    btnRemove = document.querySelector('remove');
+    btnRemoveAll = document.getElementById('remove-all');
 btnAdd.addEventListener('click', showCard);
+btnRemoveAll.addEventListener('click', removeCards);

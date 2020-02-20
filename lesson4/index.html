@@ -27,6 +27,7 @@
         }
 
         .wrap {
+            position: relative;
             float: left;
             width: 200px;
             margin-right: 15px;
@@ -45,6 +46,32 @@
         .wrap p {
             overflow: hidden;
         }
+
+        .remove {
+            position: absolute;
+            right: 10px;
+            box-shadow: 0 0 5px 0 rgba(255, 0, 0, 0.3);
+            cursor: pointer;
+        }
+
+        #remove-all {
+            position: absolute;
+            top: 300px;
+            right: 0;
+            animation: shadow 1s ease-in-out infinite;
+        }
+
+        @keyframes shadow {
+            0% {
+                box-shadow: 0 0 20px 5px rgba(255, 0, 0, 0);
+            }
+            50% {
+                box-shadow: 0 0 20px 5px rgba(255, 0, 0, 0.3);
+            }
+            100% {
+                box-shadow: 0 0 20px 5px rgba(255, 0, 0, 0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -53,9 +80,9 @@
     <textarea name="description" id="" cols="30" rows="10" placeholder="описание"></textarea>
     <input type="text" name="link-picture" placeholder="ссылка на картинку">
     <input type="text" name="link-source" placeholder="ссылка на источник">
-    <button id="add" type="button">Добавить</button>
+    <button id="add">Добавить</button>
 </form>
-<button id="remove" type="button">Удалить все</button>
+<button id="remove-all">Удалить все</button>
 <script src="script.js"></script>
 </body>
 </html>

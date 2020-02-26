@@ -39,49 +39,55 @@ function removeTodo() {
             arrayTodos = arrayTodos.filter((task, index) => index !== i);
         }
     }
-    this.parentNode.remove();
+    this.closest('.todos__item').remove();
     localStorage.setItem('Todos', JSON.stringify(arrayTodos));
 }
 
 function issuingTodos() {
     arrayTodos.forEach(element => {
         let item = document.createElement('li'),
-            span1 = document.createElement('span'),
-            span2 = document.createElement('span'),
+            todoTitle = document.createElement('span'),
+            todoDeadline = document.createElement('span'),
             btn = document.createElement('button'),
             progress = document.createElement('div'),
             itemDate;
         item.className = "todos__item";
-        span1.className = "todos__title";
-        span2.className = "todos__deadline";
+        todoTitle.className = "todos__title";
+        todoDeadline.className = "todos__deadline";
         btn.className = "todos__delete";
         progress.className = "progress";
         for (key in element) {
-            span1.innerText = key;
+            todoTitle.innerText = key;
             itemDate = new Date(element[key]);
             (Date.parse(itemDate) > Date.parse(new Date())) ? item.classList.add('expires') : item.classList.add('dead');
-            span2.innerText = `Дата: ${itemDate.getDate()}.${itemDate.getMonth() + 1}.${itemDate.getFullYear()} Время: ${itemDate.getHours()}:${itemDate.getMinutes()}:${itemDate.getSeconds()}`;
-            progressCycle(element[key], span2, progress);
+            todoDeadline.innerText = `Дата: ${itemDate.getDate()}.${itemDate.getMonth() + 1}.${itemDate.getFullYear()} Время: ${itemDate.getHours()}:${itemDate.getMinutes()}:${itemDate.getSeconds()}`;
+            progressCycle(element[key], todoDeadline, progress);
         }
         btn.innerHTML = "&times;";
         btn.addEventListener('click', removeTodo)
-        item.append(progress, span1, span2, btn);
+        item.append(progress, todoTitle, todoDeadline, btn);
         todosList.append(item);
     });
 }
 
 function progressCycle(date, span, bar) {
-    setInterval(() => {
-        let bufferDate = new Date(new Date(date) - new Date()),
-            offsetWidth = span.parentNode.offsetWidth;
-        if (Date.parse(bufferDate) >= 0) {
-            span.innerText = `Осталось: ${bufferDate.getDate() - 1} дней, ${bufferDate.getMonth()} месяцев, ${bufferDate.getFullYear() - 1970} лет, ${bufferDate.getUTCHours()}:${bufferDate.getMinutes()}:${bufferDate.getSeconds()}`;
-            bar.style.width = (offsetWidth - (Date.parse(bufferDate) / 1000) / offsetWidth) + 'px';
-        } else {
-            span.parentNode.classList.remove('expires');
-            span.parentNode.classList.add('dead');
-        }
-    }, 1000);
+    let progressDate = new Date(new Date(date) - new Date()),
+        progressStep = 0,
+        progressWidth = 0,
+        interval = setInterval(() => {
+            let bufferDate = new Date(new Date(date) - new Date()),
+                offsetWidth = span.closest('.todos__item').offsetWidth;
+            progressStep = (offsetWidth / (Date.parse(progressDate) / 1000));
+            if (Date.parse(bufferDate) >= 0) {
+                span.innerText = `Осталось: ${bufferDate.getDate() - 1} дней, ${bufferDate.getMonth()} месяцев, ${bufferDate.getFullYear() - 1970} лет, ${bufferDate.getUTCHours()}:${bufferDate.getMinutes()}:${bufferDate.getSeconds()}`;
+                progressWidth += progressStep;
+                bar.style.width = progressWidth + 'px';
+            } else {
+                clearInterval(interval);
+                span.closest('.todos__item').classList.remove('expires');
+                span.closest('.todos__item').classList.add('dead');
+            }
+        }, 1000);
 }
 
 issuingTodos();

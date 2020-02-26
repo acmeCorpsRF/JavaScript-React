@@ -1,0 +1,144 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+button, input, textarea, select, option {
+    border: none;
+    outline: none;
+}
+
+button {
+    background-color: transparent;
+    cursor: pointer;
+}
+
+a, button {
+    transition-property: color, background-image, background-color, transform, opacity, box-shadow;
+    transition-duration: 0.3s;
+    transition-timing-function: linear;
+}
+
+::before, ::after {
+    box-sizing: border-box;
+    transition: 0.3s linear;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    font-family: Roboto, sans-serif;
+    background-color: #f7f7f7;
+}
+
+.wrapper {
+    padding: 100px;
+}
+
+.add-todos {
+    margin-bottom: 25px;
+    padding: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 4px 0 rgba(13, 21, 26, 0.12);
+}
+
+.add-todos::after {
+    content: '';
+    display: block;
+    clear: right;
+}
+
+.add-todos input {
+    width: 35%;
+    margin-right: 10px;
+    padding: 5px 10px;
+    border: 2px solid #f7f7f7;
+    border-radius: 5px;
+}
+
+.add-todos__button {
+    float: right;
+    padding: 5px 10px;
+    color: #ffffff;
+    background-color: #02a354;
+    border: 2px solid #f7f7f7;
+    border-radius: 5px;
+    box-shadow: 0 1px 4px 0 rgba(13, 21, 26, 0);
+}
+
+.add-todos__button:hover {
+    box-shadow: 0 1px 4px 0 rgba(13, 21, 26, 0.5);
+}
+
+.todos {
+    padding: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 4px 0 rgba(13, 21, 26, 0.12);
+}
+
+.todos__list {
+    list-style: none;
+}
+
+.todos__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 1px 4px 0 rgba(13, 21, 26, 0.12);
+}
+
+.todos__item span {
+    position: relative;
+    z-index: 1;
+}
+
+.todos__delete {
+    position: relative;
+    z-index: 1;
+    padding: 5px 10px;
+    color: #ffffff;
+    background-color: #a32c30;
+    border: 2px solid #f7f7f7;
+    border-radius: 5px;
+    box-shadow: 0 1px 4px 0 rgba(13, 21, 26, 0);
+}
+
+.todos__delete:hover {
+    box-shadow: 0 1px 4px 0 rgba(13, 21, 26, 0.5);
+}
+
+.progress {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: 5px;
+}
+
+.expires .progress {
+    background: linear-gradient(to left, #ffffff, #008000);
+}
+
+.dead {
+    color: #ffffff;
+}
+
+.dead .progress {
+    right: 0;
+    background-color: #ff0000;
+}

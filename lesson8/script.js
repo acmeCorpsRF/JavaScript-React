@@ -101,11 +101,11 @@ function addUser(e) {
             createPushObj(nameValue, emailValue, passwordValue);
         } else {
             let str = JSON.stringify(JSON.parse(localStorage.Users));
-            if (nameValue.indexOf(str) == -1) {
-                // Всегда возвращается -1. Типа "Нико" нет в "Николай". Не пойму почему. ٩(ʘ益ʘ)۶
-                createPushObj(nameValue, emailValue, passwordValue);
-            } else {
+            console.log(str.includes(nameValue));
+            if (str.includes(nameValue)) {
                 alert('Недопустимое значение имени!');
+            } else {
+                createPushObj(nameValue, emailValue, passwordValue);
             }
         }
     } else {

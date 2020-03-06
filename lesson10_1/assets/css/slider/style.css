@@ -1,0 +1,327 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+button, input, textarea, select, option {
+    border: none;
+    outline: none;
+}
+
+button {
+    background-color: transparent;
+    cursor: pointer;
+}
+
+a, button {
+    transition-property: color, background-image, background-color, transform, opacity, font-size;
+    transition-duration: 0.3s;
+    transition-timing-function: linear;
+}
+
+::before, ::after {
+    box-sizing: border-box;
+    transition: 0.3s linear;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    font-family: Roboto, sans-serif;
+    background-color: #f7f7f7;
+}
+
+.wrap {
+    padding: 100px;
+}
+
+.slider {
+    position: relative;
+}
+
+.title {
+    position: absolute;
+    margin: 20px;
+    color: #ffffff;
+    z-index: 1;
+}
+
+@media (max-width: 639px) {
+
+    .title {
+        font-size: 20px;
+    }
+
+}
+
+.swiper {
+    position: relative;
+    left: 0;
+    transition-property: left;
+    transition-duration: 0.5s;
+    transition-timing-function: linear;
+}
+
+.slider .poster {
+    position: relative;
+    min-height: 300px;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px 0 rgba(13, 21, 26, 0.12), 0 1px 2px 0 rgba(13, 21, 26, 0.12);
+}
+
+.slider .poster::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(31, 0, 255, 0.7);
+}
+
+.slider .poster:first-child {
+    background: url('https://placeimg.com/640/480/1') center/cover no-repeat;
+}
+
+.slider .poster:nth-child(2) {
+    background: url('https://placeimg.com/640/480/2') center/cover no-repeat;
+}
+
+.slider .poster:nth-child(3) {
+    background: url('https://placeimg.com/640/480/3') center/cover no-repeat;
+}
+
+.slider .poster:nth-child(4) {
+    background: url('https://placeimg.com/640/480/4') center/cover no-repeat;
+}
+
+.slider .poster:nth-child(5) {
+    background: url('https://placeimg.com/640/480/5') center/cover no-repeat;
+}
+
+.slider .poster:last-child {
+    background: url('https://placeimg.com/640/480/6') center/cover no-repeat;
+}
+
+@media (min-width: 768px) {
+
+    .slider .poster {
+        padding: 75px 100px;
+    }
+
+}
+
+@media (max-width: 767px) and (min-width: 640px) {
+
+    .slider .poster {
+        padding: 100px;
+    }
+
+}
+
+@media (max-width: 639px) {
+
+    .slider .poster {
+        padding: 60px;
+    }
+
+}
+
+.slider .action .poster {
+    float: left;
+}
+
+.poster .author {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 135px;
+    padding: 5px;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+
+    .poster .author {
+        float: left;
+    }
+
+}
+
+@media (max-width: 767px) {
+
+    .poster .author {
+        margin-right: auto;
+        margin-bottom: 20px;
+        margin-left: auto;
+    }
+
+}
+
+.author-img {
+    width: 75px;
+    height: 75px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.poster .name {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.poster .position {
+    font-size: 12px;
+    color: #ffffff;
+}
+
+.poster .text {
+    position: relative;
+    color: #ffffff;
+}
+
+@media (min-width: 768px) {
+
+    .poster .text {
+        margin-left: 155px;
+    }
+
+}
+
+.paragraph:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.prev,
+.next {
+    position: absolute;
+    top: 50%;
+    font-size: 26px;
+    color: #ffffff;
+    background-color: transparent;
+    cursor: pointer;
+    transform: translateY(-50%) scaleY(2);
+    opacity: 0.5;
+    z-index: 1;
+}
+
+.prev:hover,
+.next:hover {
+    opacity: 1;
+}
+
+@media (min-width: 640px) {
+
+    .prev {
+        left: 40px;
+    }
+
+}
+
+@media (max-width: 639px) {
+
+    .prev {
+        left: 20px;
+    }
+
+}
+
+@media (min-width: 640px) {
+
+    .next {
+        right: 40px;
+    }
+
+}
+
+@media (max-width: 639px) {
+
+    .next {
+        right: 20px;
+    }
+
+}
+
+.dots {
+    position: absolute;
+    bottom: 20px;
+    right: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    list-style: none;
+}
+
+.item {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    margin-left: 10px;
+    border-radius: 50%;
+    background-color: #c300ff;
+    border: 2px solid #ff2064;
+}
+
+.item:hover {
+    cursor: pointer;
+}
+
+.item.active {
+    background-color: #ff2064;
+    border-color: #000000;
+}
+
+.shadow {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 100;
+}
+
+.slide {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    max-width: 320px;
+    padding: 20px;
+    text-align: center;
+    background-color: #ffffff;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px 0 rgba(13, 21, 26, 0.12), 0 1px 2px 0 rgba(13, 21, 26, 0.12);
+    transform: translate(-50%, -50%);
+    z-index: 101;
+}
+
+.slide .author {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 135px;
+    margin-right: auto;
+    margin-bottom: 20px;
+    margin-left: auto;
+    padding: 5px;
+}
+
+.slide .name {
+    font-weight: bold;
+}
+
+.slide .position {
+    font-size: 12px;
+}

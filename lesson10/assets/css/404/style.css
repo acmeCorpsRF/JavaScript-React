@@ -1,0 +1,84 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+button, input, textarea, select, option {
+    border: none;
+    outline: none;
+}
+
+button {
+    background-color: transparent;
+    cursor: pointer;
+}
+
+a, button {
+    transition-property: color, background-image, background-color, transform, opacity, box-shadow;
+    transition-duration: 0.3s;
+    transition-timing-function: linear;
+}
+
+::before, ::after {
+    box-sizing: border-box;
+    transition: 0.3s linear;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    height: 100%;
+    font-family: Roboto, sans-serif;
+    background-color: #f7f7f7;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+}
+
+.error-page__block {
+    min-height: 550px;
+    max-height: 550px;
+    height: 550px;
+    background-image: url('https://znaiwifi.com/wp-content/uploads/2018/01/hqdefault.jpg');background-repeat: no-repeat;
+    background-color: #000;
+    background-position: 50% 0;
+    display: -webkit-box;
+    display: flex;
+    width: 100%;
+    -webkit-box-pack: end;
+    justify-content: flex-end;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+}
+
+.grid-base {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.error-page__title {
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 30px;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 120px;
+    color: #c59f56;
+}

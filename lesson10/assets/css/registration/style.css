@@ -1,0 +1,103 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+button, input, textarea, select, option {
+    border: none;
+    outline: none;
+}
+
+button {
+    background-color: transparent;
+    cursor: pointer;
+}
+
+a, button {
+    transition-property: color, background-image, background-color, transform, opacity, box-shadow;
+    transition-duration: 0.3s;
+    transition-timing-function: linear;
+}
+
+::before, ::after {
+    box-sizing: border-box;
+    transition: 0.3s linear;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    height: 100%;
+    font-family: Roboto, sans-serif;
+    background-color: #f7f7f7;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    padding: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
+}
+
+form * {
+    padding: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.valid {
+    position: relative;
+    border-color: green;
+}
+
+.not-valid {
+    border-color: red;
+}
+
+.shaking {
+    animation: shaking 0.5s linear;
+}
+
+form > *:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+form button:hover {
+    background-color: rgba(255, 0, 0, 0.3);
+}
+
+@keyframes shaking {
+    0% {
+        transform: translateX(-3px);
+    }
+    25% {
+        transform: translateX(7px);
+    }
+    50% {
+        transform: translateX(-7px);
+    }
+
+    75% {
+        transform: translateX(7px);
+    }
+
+    100% {
+        transform: translateX(3px);
+    }
+}

@@ -15,11 +15,16 @@
 // (карточка с Фамилией, именем и связи).
 
 class Person {
-    constructor(name, surname, age, friends) {
+    constructor(name, surname, age) {
         this.name = name;
         this.surname = surname;
         this.age = age;
-        this.friends = friends | [];
+        this.friends = [];
+    }
+
+    addFriend(friendName, friendSurname, friendAge) {
+        let friend = new Person(friendName, friendSurname, friendAge);
+        this.friends.push(friend);
     }
 }
 
@@ -28,28 +33,23 @@ let person1 = new Person('Николай', 'Иванов', 33),
     person3 = new Person('Александр', 'Кучеров', 34),
     person4 = new Person('Илья', 'Тришков', 31),
     person5 = new Person('Дмитрий', 'Чаплыгин', 32),
-    person6 = new Person('Александр', 'Иваницкий', 34),
-    person7 = new Person('Дмитрий', 'Андреев', 33),
-    person8 = new Person('Павел', ' Савин', 32),
-    person9 = new Person('Александр', ' Левченко', 31),
-    person10 = new Person('Алексей', 'Алешин', 34),
-    person11 = new Person('Владимир', 'Кривачёв', 34),
-    person12 = new Person('Александр', 'Завершнев', 30),
-    person13 = new Person('Сергей', 'Жуков', 28),
-    person14 = new Person('Тамара', 'Дейкун', 33),
-    person15 = new Person('Рустам', 'Султанов', 30),
-    person16 = new Person('Михаил', 'Терно', 34),
-    person17 = new Person('Кирилл', 'Богданов', 32),
-    person18 = new Person('Николай', 'Левадный', 33),
-    person19 = new Person('Андрей', 'Екимов', 34),
-    person20 = new Person('Мария', 'Киселёва', 30),
-    person21 = new Person('Оксана', 'Андреева', 30);
+    person6 = new Person('Александр', 'Иваницкий', 34);
+person2.addFriend('Дмитрий', 'Андреев', 33);
+person2.addFriend('Павел', ' Савин', 32);
+person2.addFriend('Александр', ' Левченко', 31);
+person3.addFriend('Алексей', 'Алешин', 34);
+person3.addFriend('Владимир', 'Кривачёв', 34);
+person3.addFriend('Александр', 'Завершнев', 30);
+person4.addFriend('Сергей', 'Жуков', 28);
+person4.addFriend('Тамара', 'Дейкун', 33);
+person4.addFriend('Рустам', 'Султанов', 30);
+person5.addFriend('Михаил', 'Терно', 34);
+person5.addFriend('Кирилл', 'Богданов', 32);
+person5.addFriend('Николай', 'Левадный', 33);
+person6.addFriend('Андрей', 'Екимов', 34);
+person6.addFriend('Мария', 'Киселёва', 30);
+person6.addFriend('Оксана', 'Андреева', 30);
 person1.friends = [person2, person3, person4, person5, person6];
-person2.friends = [person7, person8, person9];
-person3.friends = [person10, person11, person12];
-person4.friends = [person13, person14, person15];
-person5.friends = [person16, person17, person18];
-person6.friends = [person19, person20, person21];
 
 let cnvs = document.getElementById('cnvs'),
     ctx = cnvs.getContext('2d');

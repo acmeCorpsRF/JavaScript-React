@@ -1,0 +1,17 @@
+.chatlist {
+  height: 100%;
+  background-color: #ffffff;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
+
+  &-item {
+    transition-property: background-color, cursor;
+    transition-duration: 0.3s;
+    transition-timing-function: linear;
+  }
+
+  &-item:hover {
+    background-color: lighten(#02a354, 50%);
+    cursor: pointer;
+  }
+
+}

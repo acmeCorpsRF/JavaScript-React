@@ -10,7 +10,31 @@ import ChatIcon from '@material-ui/icons/Chat';
 
 export default class ChatList extends Component {
 
+    componentDidMount() {
+        const {url} = this.props;
+        let list = document.getElementsByClassName('chatlist-link');
+        for (let key of list) {
+            let href = (key.href).slice(-url.length);
+            if (href == url) {
+                (key.closest('.chatlist').childNodes).forEach(node => node.classList.remove('chosen'));
+                key.closest('.chatlist-item').classList.add('chosen');
+            }
+        }
+    }
+
     render() {
+        const {url} = this.props;
+        let list = document.getElementsByClassName('chatlist-link');
+        for (let key of list) {
+            let href = (key.href).slice(-url.length);
+            if (href == url) {
+                (key.closest('.chatlist').childNodes).forEach(node => node.classList.remove('chosen'));
+                key.closest('.chatlist-item').classList.add('chosen');
+            }
+        }
+
+        // Как вот это ↑↑↑↑↑ впихнуть в это ↓↓↓↓↓
+
         const {chats} = this.props.state;
         const genItems = (Object.values(chats).map((chat, index) => (
             <ListItem className="chatlist-item" key={index}>
@@ -28,6 +52,6 @@ export default class ChatList extends Component {
             <List className="chatlist" disablePadding={true}>
                 {genItems}
             </List>
-        )
+        );
     }
 }

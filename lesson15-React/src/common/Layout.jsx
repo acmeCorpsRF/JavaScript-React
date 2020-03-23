@@ -26,25 +26,24 @@ export default class Layout extends Component {
         chatId: 1,
     };
 
-    // updateDataSendMessage = (messageId, sender, senderText, chatId) => {
-    //     const {messages, chats} = this.state;
-    //     this.setState({
-    //         messages: {...messages, [messageId]: {author: sender, text: senderText}},
-    //         chats: {
-    //             ...chats,
-    //             [chatId]: {...chats[chatId], messageList: [...chats[chatId].messageList, messageId]}
-    //         }
-    //     });
-    // };
-
-    updateDataSendMessage = (messages, messageId, sender, senderText, chats, chatId) => {
-        this.setState((prevState) => ({
-            messages: {...prevState.messages, [messageId]: {author: sender, text: senderText}},
-            chats: {
-                ...prevState.chats,
-                [chatId]: {...prevState.chats[chatId], messageList: [...prevState.chats[chatId].messageList, messageId]}
+    updateDataSendMessage = (sender, senderText, chatId) => {
+        this.setState((prevState) => {
+            let dictionary = Object.values(prevState.messages);
+            if ((((dictionary[dictionary.length - 1]).author == this.state.user) && (sender == 'robot'))
+                || sender == this.state.user) {
+                let messageId = Object.keys(prevState.messages).length + 1;
+                return {
+                    messages: {...prevState.messages, [messageId]: {author: sender, text: senderText}},
+                    chats: {
+                        ...prevState.chats,
+                        [chatId]: {
+                            ...prevState.chats[chatId],
+                            messageList: [...prevState.chats[chatId].messageList, messageId]
+                        }
+                    }
+                }
             }
-        }));
+        })
     };
 
 
@@ -70,7 +69,6 @@ export default class Layout extends Component {
                 <Aside state={this.state} updateDataAddChat={this.updateDataAddChat} url={this.props.match.url}/>
                 <MessageField
                     updateDataSendMessage={this.updateDataSendMessage}
-                    updateDataChangeInputText={this.updateDataChangeInputText}
                     state={this.state}
                     chatId={incomingParams ? incomingParams : this.props.chatId}
                 />

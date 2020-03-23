@@ -15,7 +15,7 @@ export default class ChatList extends Component {
         const {chats} = this.props.state;
         const {url} = this.props;
         const genItems = (Object.values(chats).map((chat, index) => {
-            let classes = classNames('chatlist-item', {chosen: url.slice(6) == index ? true : false});
+            let classes = classNames('chatlist-item', {chosen: url.slice(6) == index + 1});
 
             return (
                 <ListItem className={classes} key={index}>

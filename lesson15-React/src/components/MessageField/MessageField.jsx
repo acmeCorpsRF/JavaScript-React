@@ -12,14 +12,12 @@ export class MessageField extends Component {
     };
 
     componentDidUpdate() {
-        const {user, messages, chats} = this.props.state;
+        const {user, messages} = this.props.state;
         const {chatId, updateDataSendMessage} = this.props;
-        const messageId = Object.keys(messages).length + 1;
         if ((Object.values(messages)[Object.values(messages).length - 1]).author !== 'robot') {
             setTimeout(() => {
                 if ((Object.values(messages)[Object.values(messages).length - 1]).author !== 'robot') {
-                    // updateDataSendMessage(messageId, 'robot', `Dear ${user}, Я робот!`, chatId);
-                    updateDataSendMessage(messages, messageId, 'robot', `Dear ${user}, Я робот!`, chats, chatId);
+                    updateDataSendMessage('robot', `Dear ${user}, Я робот!`, chatId);
                 }
             }, 1000);
         }
@@ -28,10 +26,8 @@ export class MessageField extends Component {
     sendMessage = (e, text) => {
         e.preventDefault();
         const {chatId, updateDataSendMessage} = this.props;
-        const {user, messages, chats} = this.props.state;
-        const messageId = Object.keys(messages).length + 1;
-        // updateDataSendMessage(messageId, user, text,chatId);
-        updateDataSendMessage(messages, messageId, user, text, chats, chatId);
+        const {user} = this.props.state;
+        updateDataSendMessage(user, text, chatId);
         this.setState({
             inputText: '',
             disable: true
@@ -83,7 +79,7 @@ export class MessageField extends Component {
                         variant="contained"
                         color="secondary"
                         onClick={e => this.sendMessage(e, this.state.inputText)}
-                        // disabled={this.state.disable}
+                        disabled={this.state.disable}
                     >&gt;</Button>
                 </form>
             </main>

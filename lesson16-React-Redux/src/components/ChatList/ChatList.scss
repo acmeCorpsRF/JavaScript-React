@@ -1,0 +1,29 @@
+.chatlist {
+  height: 100%;
+  overflow: auto;
+
+  &-link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  &-item {
+    transition-property: background-color, cursor;
+    transition-duration: 0.3s;
+    transition-timing-function: linear;
+  }
+
+  &-item:hover {
+    background-color: lighten(#02a354, 50%);
+    cursor: pointer;
+  }
+
+  .chosen {
+    background-color: lighten(yellow, 35%);
+  }
+
+}

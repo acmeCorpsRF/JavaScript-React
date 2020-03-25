@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './Aside.scss';
-import ChatList from '../../components/ChatList/ChatList';
+import ChatList from '../../containers/ChatList/ChatList';
 import Button from '@material-ui/core/Button';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import PropTypes from "prop-types";
@@ -14,6 +14,7 @@ class Aside extends Component {
     };
 
     render() {
+        const {updateDataAddChat} = this.props;
         return (
             <aside className="aside">
                 <ChatList url={this.props.url}/>

@@ -4,6 +4,7 @@ import {ADD_CHAT} from "../actions/chatActions";
 
 const initialStore = {
     user: 'Грета Тумблер',
+    userSocialActivity: 'Активистка',
     messages: {
         1: {author: 'robot', text: 'Это чат №1.'},
         2: {author: 'robot', text: 'Это чат №2.'},
@@ -23,11 +24,11 @@ const initialStore = {
 export default function chatReducer(store = initialStore, action) {
     switch (action.type) {
         case SEND_MESSAGE: {
-            // const dictionary = Object.keys(store.messages);
-            // if ((((dictionary[dictionary.length - 1]).author == store.user) && (store.sender == 'robot'))
-            //     || store.sender == store.user) {
-            //     console.log(store);
-            // }
+            const dictionary = Object.values(store.messages);
+            if (!((((dictionary[dictionary.length - 1]).author == store.user) && (action.sender == 'robot'))
+                    || (action.sender == store.user))) {
+                return store;
+            }
             const messageId = Object.keys(store.messages).length + 1;
             return update(store, {
                 chats: {
@@ -47,16 +48,24 @@ export default function chatReducer(store = initialStore, action) {
             });
         }
         case ADD_CHAT: {
-            console.log(action.type);
-            const chatId = Object.keys(store.chats).length + 1;
+            const newChatId = Object.keys(store.chats).length + 1;
+            const messageId = Object.keys(store.messages).length + 1;
             return update(store, {
-                chats: {
+                messages: {
                     $merge: {
-                        [chatId]: {
-                            title: action.title, messageList: []
-                        }
+                        ...store.messages, [messageId]: {author: 'robot', text: `Это чат №${newChatId}.`}
                     }
                 },
+                chats: {
+                    $merge: {
+                        ...store.chats,
+                        [newChatId]: {
+                            title: 'Chat ' + newChatId,
+                            messageList: [messageId],
+                            link: '/chat/' + newChatId
+                        }
+                    }
+                }
             });
         }
         default:

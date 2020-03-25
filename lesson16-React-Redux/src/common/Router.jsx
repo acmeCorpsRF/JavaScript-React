@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Switch, Route} from 'react-router-dom';
 import Layout from './Layout';
-import NotFound from '../components/404/404';
-import Profile from '../components/Profile/Profile';
+import NotFound from '../components/404/';
+import Profile from '../components/Profile/';
 
 export default class Router extends Component {
 

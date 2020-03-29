@@ -1,0 +1,16 @@
+.header {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding: 0 20px;
+  color: #ffffff;
+  background-color: #419fd9;
+
+  &__profile-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: inherit;
+    text-decoration: none;
+  }
+}

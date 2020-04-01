@@ -1,0 +1,9 @@
+{
+  "1": {"title": "Chat 1", "messageList": [1], "link": "/chat/1"},
+  "2": {"title": "Chat 2", "messageList": [2], "link": "/chat/2"},
+  "3": {"title": "Chat 3", "messageList": [3], "link": "/chat/3"},
+  "4": {"title": "Chat 4", "messageList": [4], "link": "/chat/4"},
+  "5": {"title": "Chat 5", "messageList": [5], "link": "/chat/5"},
+  "6": {"title": "Chat 6", "messageList": [], "link": "/chat/6"}
+}
+

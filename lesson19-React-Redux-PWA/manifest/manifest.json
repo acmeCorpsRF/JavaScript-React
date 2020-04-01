@@ -1,0 +1,26 @@
+{
+  "short_name": "Messenger",
+  "name": "Messenger App",
+  "icons": [
+    {
+      "src": "/manifest/magic_tablet_64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "/manifest/magic_tablet_128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/manifest/magic_tablet_512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#f7f7f7",
+  "theme_color": "#ebf5fb",
+  "orientation": "any",
+  "display": "standalone"
+}

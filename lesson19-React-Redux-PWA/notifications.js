@@ -6,22 +6,6 @@ function notifications(window) {
         return;
     }
 
-    // navigator.serviceWorker.ready
-    //     .then(function (registration) {
-    //         registration.pushManager.getSubscription()
-    //             .then(function (subscription) {
-    //                 if (subscription) {
-    //                     console.log(subscription);
-    //                 }
-    //                 else {
-    //                     console.log('Возникла ошибка');
-    //                 }
-    //             })
-    //             .catch(function (error) {
-    //                 console.error('Возникла ошибка', error);
-    //             });
-    //     });
-
     Notification.requestPermission(function (result) {
 
         if (result === 'denied') {

@@ -20,19 +20,26 @@ import PropTypes from "prop-types";
 class Profile extends Component {
 
     static propTypes = {
-        isVisibility: PropTypes.bool.isRequired
+        isVisibility: PropTypes.bool.isRequired,
+        chats: PropTypes.object.isRequired
     };
 
     render() {
-        const {user, userSocialActivity, isVisibility} = this.props;
-        let classes = classNames('aside', {'visibility': isVisibility});
+        const {user, userSocialActivity, isVisibility, chats} = this.props;
+        let classes = classNames('aside', {'visibility': isVisibility}),
+            chatActive = '/';
+        if (Object.keys(chats).length != 0) {
+            Object.values(chats).map(chat => {
+                if (chat.active == true) chatActive = chat.link;
+            });
+        }
         return (
             <div className="wrapper">
                 <Header/>
                 <aside className={classes}>
                     <List className="profile__menu" disablePadding={true}>
                         <ListItem className="profile__menu-item">
-                            <Link className="profile__menu-link" to="/">
+                            <Link className="profile__menu-link" to={chatActive}>
                                 <ListItemAvatar>
                                     <Avatar>
                                         <HomeIcon/>
@@ -72,7 +79,7 @@ class Profile extends Component {
                             </Link>
                         </ListItem>
                         <ListItem className="profile__menu-item">
-                            <Link className="profile__menu-link" to="/">
+                            <Link className="profile__menu-link" to={chatActive}>
                                 <ListItemAvatar>
                                     <Avatar>
                                         <ChatIcon/>
@@ -136,7 +143,8 @@ class Profile extends Component {
 const mapStateToProps = ({profileReducer, chatReducer}) => ({
     user: profileReducer.user,
     userSocialActivity: profileReducer.userSocialActivity,
-    isVisibility: chatReducer.isVisibility
+    isVisibility: chatReducer.isVisibility,
+    chats: chatReducer.chats
 });
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

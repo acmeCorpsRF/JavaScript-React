@@ -12,7 +12,7 @@ const persistConfig = {
     key: 'Messanger',
     storage,
     stateReconciler: autoMergeLevel2,
-    blacklist: ['chatReducer', 'profileReducer']
+    whitelist: ['chatReducer', 'profileReducer']
 };
 
 export const history = createBrowserHistory();

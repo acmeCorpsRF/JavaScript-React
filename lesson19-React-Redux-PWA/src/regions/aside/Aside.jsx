@@ -23,7 +23,7 @@ class Aside extends Component {
             <aside className={classes}>
                 <ChatList url={this.props.url}/>
                 <Button className="add-chat" variant="contained" color="primary" startIcon={<CloudUploadIcon/>}
-                        onClick={addChat}>Добавить чат...</Button>
+                        onClick={addChat}>Добавить чат</Button>
             </aside>
         );
     }

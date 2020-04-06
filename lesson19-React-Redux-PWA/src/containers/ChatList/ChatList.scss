@@ -6,11 +6,11 @@
     transition-property: background-color, cursor;
     transition-duration: 0.3s;
     transition-timing-function: linear;
-  }
 
-  &-item:hover {
-    background-color: lighten(#02a354, 50%);
-    cursor: pointer;
+    &:not(:last-child) {
+      border-bottom: 1px solid #f7f7f7;
+    }
+
   }
 
   .chosen {
@@ -23,6 +23,24 @@
 
   [role="progressbar"] {
     margin-right: 10px;
+  }
+
+  .unread {
+    background-color: lighten(#3f51b5, 20%);
+
+    p {
+      width: 20px;
+      font-weight: bold;
+      text-align: center;
+      border-radius: 50%;
+      background-color: #ffff00;
+    }
+
+  }
+
+  &-item:hover {
+    background-color: lighten(#02a354, 50%);
+    cursor: pointer;
   }
 
 }

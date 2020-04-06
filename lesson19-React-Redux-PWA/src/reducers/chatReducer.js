@@ -1,44 +1,59 @@
 import update from 'react-addons-update';
-import {SEND_MESSAGE} from '../actions/messageActions';
-import {START_CHATS_LOADING, SUCCESS_CHATS_LOADING, ERROR_CHATS_LOADING} from '../actions/chatActions';
-import {START_MESSAGES_LOADING, SUCCESS_MESSAGES_LOADING, ERROR_MESSAGES_LOADING} from '../actions/messageActions';
-import {ADD_CHAT, REMOVE_CHAT} from "../actions/chatActions";
-import {TOGGLE_MENU} from "../actions/chatActions";
+import {
+    SEND_MESSAGE,
+    START_MESSAGES_LOADING,
+    SUCCESS_MESSAGES_LOADING,
+    ERROR_MESSAGES_LOADING
+} from '../actions/messageActions';
+import {
+    START_CHATS_LOADING,
+    SUCCESS_CHATS_LOADING,
+    ERROR_CHATS_LOADING,
+    ADD_CHAT,
+    REMOVE_CHAT,
+    TOGGLE_MENU,
+    READ_UNREAD,
+    MAKE_ACTIVE,
+    MAKE_NOT_ACTIVE
+} from '../actions/chatActions';
 
 const initialStore = {
-    isLoading: false,
     messages: {},
     chats: {},
+    isLoadingChats: false,
     isLoadingMessages: false,
-    isVisibility: false
+    isVisibility: false,
+    firstDataLoadChats: false,
+    firstDataLoadMessages: false
 };
 
 export default function chatReducer(store = initialStore, action) {
     switch (action.type) {
         case START_CHATS_LOADING: {
             return update(store, {
-                isLoading: {$set: true}
+                isLoadingChats: {$set: true}
             });
         }
         case SUCCESS_CHATS_LOADING: {
             const downloadableChats = {};
             Object.keys(action.payload).map(chatKey => {
-                const {title, messageList, link} = action.payload[chatKey];
-                downloadableChats[chatKey] = {title, messageList, link};
+                const {title, messageList, link, unread, active} = action.payload[chatKey];
+                downloadableChats[chatKey] = {title, messageList, link, unread, active};
             });
             return update(store, {
                 chats: {$set: downloadableChats},
-                isLoading: {$set: false}
+                isLoadingChats: {$set: false},
+                firstDataLoadChats: {$set: true}
             });
         }
         case ERROR_CHATS_LOADING: {
             return update(store, {
-                isLoading: {$set: false}
+                isLoadingChats: {$set: false}
             });
         }
         case START_MESSAGES_LOADING: {
             return update(store, {
-                isLoading: {$set: true},
+                isLoadingMessages: {$set: true},
             });
         }
         case SUCCESS_MESSAGES_LOADING: {
@@ -49,13 +64,13 @@ export default function chatReducer(store = initialStore, action) {
             });
             return update(store, {
                 messages: {$set: downloadableMessages},
-                isLoading: {$set: false},
-                isLoadingMessages: {$set: true}
+                isLoadingMessages: {$set: false},
+                firstDataLoadMessages: {$set: true}
             });
         }
         case ERROR_MESSAGES_LOADING: {
             return update(store, {
-                isLoading: {$set: false},
+                isLoadingMessages: {$set: false},
             });
         }
         case SEND_MESSAGE: {
@@ -68,7 +83,9 @@ export default function chatReducer(store = initialStore, action) {
                             [action.chatId]: {
                                 title: store.chats[action.chatId].title,
                                 messageList: [...store.chats[action.chatId].messageList, messageId],
-                                link: store.chats[action.chatId].link
+                                link: store.chats[action.chatId].link,
+                                unread: store.chats[action.chatId].unread,
+                                active: store.chats[action.chatId].active
                             }
                         }
                     },
@@ -100,7 +117,9 @@ export default function chatReducer(store = initialStore, action) {
                         [action.chatId]: {
                             title: store.chats[action.chatId].title,
                             messageList: [...store.chats[action.chatId].messageList, messageId],
-                            link: store.chats[action.chatId].link
+                            link: store.chats[action.chatId].link,
+                            unread: store.chats[action.chatId].unread,
+                            active: store.chats[action.chatId].active
                         }
                     }
                 },
@@ -126,7 +145,8 @@ export default function chatReducer(store = initialStore, action) {
                         [newChatId]: {
                             title: 'Chat ' + newChatId,
                             messageList: [messageId],
-                            link: '/chat/' + newChatId
+                            link: '/chat/' + newChatId,
+                            unread: true
                         }
                     }
                 }
@@ -155,9 +175,68 @@ export default function chatReducer(store = initialStore, action) {
         }
         case TOGGLE_MENU: {
             let toggle;
-            store.isVisibility == false ? toggle = true: toggle = false;
+            store.isVisibility == false ? toggle = true : toggle = false;
             return update(store, {
                 isVisibility: {$set: toggle}
+            });
+        }
+        case READ_UNREAD: {
+            let readingStatus;
+            if (action.actionFrom == 'SEND_MESSAGE'
+                && store.chats[action.chatId].unread == false
+                && store.chats[action.chatId].active == false) {
+                readingStatus = true;
+            } else {
+                readingStatus = store.chats[action.chatId].unread;
+            }
+            if (action.actionFrom == 'SET_LOCATION') {
+                readingStatus = false;
+            }
+            return update(store, {
+                chats: {
+                    $merge: {
+                        ...store.chats,
+                        [action.chatId]: {
+                            title: store.chats[action.chatId].title,
+                            messageList: store.chats[action.chatId].messageList,
+                            link: store.chats[action.chatId].link,
+                            unread: readingStatus,
+                            active: store.chats[action.chatId].active
+                        }
+                    }
+                }
+            });
+        }
+        case MAKE_ACTIVE: {
+            return update(store, {
+                chats: {
+                    $merge: {
+                        ...store.chats,
+                        [action.chatId]: {
+                            title: store.chats[action.chatId].title,
+                            messageList: store.chats[action.chatId].messageList,
+                            link: store.chats[action.chatId].link,
+                            unread: store.chats[action.chatId].unread,
+                            active: true
+                        }
+                    }
+                },
+            });
+        }
+        case MAKE_NOT_ACTIVE: {
+            return update(store, {
+                chats: {
+                    $merge: {
+                        ...store.chats,
+                        [action.chatId]: {
+                            title: store.chats[action.chatId].title,
+                            messageList: store.chats[action.chatId].messageList,
+                            link: store.chats[action.chatId].link,
+                            unread: store.chats[action.chatId].unread,
+                            active: false
+                        }
+                    }
+                },
             });
         }
         default:

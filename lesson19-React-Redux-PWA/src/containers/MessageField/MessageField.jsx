@@ -16,8 +16,8 @@ class MessageField extends Component {
         messages: PropTypes.object.isRequired,
         chats: PropTypes.object.isRequired,
         updateDataSendMessage: PropTypes.func.isRequired,
-        isLoading: PropTypes.bool.isRequired,
-        isLoadingMessages: PropTypes.bool.isRequired
+        isLoadingMessages: PropTypes.bool.isRequired,
+        firstDataLoadMessages: PropTypes.bool.isRequired
     };
 
     state = {
@@ -37,7 +37,10 @@ class MessageField extends Component {
     // }
 
     componentDidMount() {
-        this.props.loadMessages();
+        const {messages, loadMessages, firstDataLoadMessages} = this.props;
+        if (Object.keys(messages).length == 0 && firstDataLoadMessages == false) {
+            loadMessages();
+        }
     }
 
     sendMessage = (e, text) => {
@@ -65,7 +68,7 @@ class MessageField extends Component {
 
     render() {
         const {chatId, chats, messages} = this.props;
-        if (this.props.isLoading) {
+        if (this.props.isLoadingMessages) {
             return (
                 <main className="main">
                     <div className="output-field">
@@ -87,14 +90,14 @@ class MessageField extends Component {
             )
         }
         let messageElements;
-        if (this.props.isLoadingMessages) {
-            if (chats[chatId].messageList.length !== 0) {
-                messageElements = chats[chatId].messageList.map((messageId, index) => (
-                    <Message key={index} text={messages[messageId].text} author={messages[messageId].author}/>
-                ));
-            } else {
-                messageElements = <Message key="no-messages" text="Сообщений нет..." author="robot"/>;
-            }
+        if (chats[chatId].messageList.length !== 0 && Object.keys(messages).length !== 0) {
+            messageElements = chats[chatId].messageList.map((messageId, index) => (
+                <Message key={index}
+                         text={messages[messageId].text} author={messages[messageId].author}
+                />
+            ));
+        } else {
+            messageElements = <Message key="no-messages" text="Сообщений нет..." author="robot"/>;
         }
         return (
             <main className="main">
@@ -131,8 +134,8 @@ const mapStateToProps = ({chatReducer, profileReducer}) => ({
     user: profileReducer.user,
     chats: chatReducer.chats,
     messages: chatReducer.messages,
-    isLoading: chatReducer.isLoading,
-    isLoadingMessages: chatReducer.isLoadingMessages
+    isLoadingMessages: chatReducer.isLoadingMessages,
+    firstDataLoadMessages: chatReducer.firstDataLoadMessages
 });
 const mapDispatchToProps = dispatch => bindActionCreators({updateDataSendMessage, loadMessages}, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(MessageField);

@@ -7,13 +7,13 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import ChatIcon from '@material-ui/icons/Chat';
 import classNames from 'classnames';
-import {bindActionCreators} from "redux";
-import connect from "react-redux/es/connect/connect";
+import {bindActionCreators} from 'redux';
+import connect from 'react-redux/es/connect/connect';
 import {push} from 'connected-react-router';
 import PropTypes from "prop-types";
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {removeChat, loadChats} from '../../actions/chatActions';
+import {removeChat, loadChats, readUnread, makeActive, makeNotActive} from '../../actions/chatActions';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 class ChatList extends Component {
@@ -22,11 +22,18 @@ class ChatList extends Component {
         chats: PropTypes.object.isRequired,
         push: PropTypes.func.isRequired,
         removeChat: PropTypes.func.isRequired,
-        isLoading: PropTypes.bool.isRequired
+        isLoadingChats: PropTypes.bool.isRequired,
+        readUnread: PropTypes.func.isRequired,
+        makeActive: PropTypes.func.isRequired,
+        makeNotActive: PropTypes.func.isRequired,
+        firstDataLoadChats: PropTypes.bool.isRequired
     };
 
     componentDidMount() {
-        this.props.loadChats();
+        const {chats, loadChats, firstDataLoadChats} = this.props;
+        if (Object.keys(chats).length == 0 && firstDataLoadChats == false) {
+            loadChats();
+        }
     }
 
     childrenCollection = (arr, thing) => {
@@ -40,26 +47,35 @@ class ChatList extends Component {
     };
 
     setLocation = (e, link, index) => {
+        const {chats, push, readUnread, makeActive, makeNotActive} = this.props;
         let button = document.getElementsByClassName('delete-chat')[index],
             arrChildren = [button];
         this.childrenCollection(arrChildren, button);
-        if (arrChildren.indexOf(e.target) == -1) this.props.push(link);
+        if (arrChildren.indexOf(e.target) == -1) {
+            Object.keys(chats).map(chatId => {
+                if (chats[chatId].active == true) makeNotActive(chatId);
+            });
+            push(link);
+            readUnread(link.slice(6), 'SET_LOCATION');
+            makeActive(link.slice(6));
+        }
     };
 
-    setLocationAfterRemove = (e, chat) => {
-        const {chats, url, removeChat} = this.props;
-        removeChat(e, chat);
+    setLocationAfterRemove = (chat) => {
+        const {chats, push, removeChat, makeActive} = this.props;
+        removeChat(chat);
         if (Object.keys(chats).length) {
-            if (chat.link == url || url == '/') {
-                this.props.push(Object.values(chats)[0].link)
+            if (chat.active == true) {
+                push(Object.values(chats)[0].link);
+                makeActive(Object.keys(chats)[0]);
             }
         } else {
-            this.props.push('/');
+            push('/');
         }
     };
 
     render() {
-        if (this.props.isLoading) {
+        if (this.props.isLoadingChats) {
             return (
                 <List className="chatlist" disablePadding={true}>
                     <ListItem className="chatlist-item" key="no-chats">
@@ -69,7 +85,7 @@ class ChatList extends Component {
                 </List>
             )
         }
-        const {chats, url, messages} = this.props;
+        const {chats, messages} = this.props;
         if (Object.keys(chats).length == 0) {
             return (
                 <List className="chatlist" disablePadding={true}>
@@ -85,7 +101,11 @@ class ChatList extends Component {
             chat.messageList.map(messageId => {
                 if (messageId == lastMessageId && messages[lastMessageId].author == 'robot') blinking = true;
             });
-            let classes = classNames('chatlist-item', {chosen: url == chat.link}, {'just-arrived': blinking});
+            let classes = classNames('chatlist-item', {
+                'chosen': chat.active,
+                'just-arrived': blinking,
+                'unread': chat.unread
+            });
             return (
                 <ListItem className={classes} key={index} onClick={(e) => this.setLocation(e, chat.link, index)}>
                     <ListItemAvatar>
@@ -95,7 +115,7 @@ class ChatList extends Component {
                     </ListItemAvatar>
                     <ListItemText primary={chat.title} secondary={chat.messageList.length}/>
                     <IconButton className="delete-chat" aria-label="delete"
-                                onClick={(e) => this.setLocationAfterRemove(e, chat)}>
+                                onClick={() => this.setLocationAfterRemove(chat)}>
                         <DeleteIcon fontSize="small"/>
                     </IconButton>
                 </ListItem>
@@ -112,7 +132,15 @@ class ChatList extends Component {
 const mapStateToProps = ({chatReducer}) => ({
     chats: chatReducer.chats,
     messages: chatReducer.messages,
-    isLoading: chatReducer.isLoading
+    isLoadingChats: chatReducer.isLoadingChats,
+    firstDataLoadChats: chatReducer.firstDataLoadChats
 });
-const mapDispatchToProps = dispatch => bindActionCreators({push, removeChat, loadChats}, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({
+    push,
+    removeChat,
+    loadChats,
+    readUnread,
+    makeActive,
+    makeNotActive
+}, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(ChatList);

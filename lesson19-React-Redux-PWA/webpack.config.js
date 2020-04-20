@@ -7,14 +7,14 @@ module.exports = {
     entry: path.resolve(__dirname, 'src', 'index.js'),
     output: {
         path: path.resolve(__dirname, 'app'),
-        filename: 'bundle.js',
+        filename: 'bundle.js'
     },
     module: {
         rules: [
             {
                 test: /\.jsx?$/i,
                 exclude: /[\\/]node_modules[\\/]/,
-                loader: 'babel-loader',
+                loader: 'babel-loader'
             },
             {
                 test: /\.s[ac]ss$/i,
@@ -34,7 +34,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, 'src', 'index.html'),
-            filename: 'index.html',
+            filename: 'index.html'
         }),
         new MiniCssExtractPlugin({
             filename: 'styles.css'

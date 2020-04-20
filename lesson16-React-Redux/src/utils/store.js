@@ -1,7 +1,6 @@
 import {createStore} from 'redux';
 import initReducers from './../reducers';
 
-
 function initStore() {
 
     const innitialStore = {};

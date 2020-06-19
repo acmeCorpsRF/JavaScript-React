@@ -1,9 +1,13 @@
 import update from 'react-addons-update';
 import {
-    SEND_MESSAGE,
     START_MESSAGES_LOADING,
     SUCCESS_MESSAGES_LOADING,
-    ERROR_MESSAGES_LOADING
+    ERROR_MESSAGES_LOADING,
+    CHANGE_INPUT_TEXT,
+    SEND_MESSAGE,
+    EDIT_MESSAGE,
+    CONFIRM_EDIT_MESSAGE,
+    REMOVE_MESSAGE
 } from '../actions/messageActions';
 import {
     START_CHATS_LOADING,
@@ -24,7 +28,10 @@ const initialStore = {
     isLoadingMessages: false,
     isVisibility: false,
     firstDataLoadChats: false,
-    firstDataLoadMessages: false
+    firstDataLoadMessages: false,
+    hiddenEditButton: true,
+    textEditMessage: {},
+    inputText: ''
 };
 
 export default function chatReducer(store = initialStore, action) {
@@ -73,6 +80,11 @@ export default function chatReducer(store = initialStore, action) {
                 isLoadingMessages: {$set: false},
             });
         }
+        case CHANGE_INPUT_TEXT: {
+            return update(store, {
+                inputText: {$set: action.text}
+            });
+        }
         case SEND_MESSAGE: {
             if (Object.keys(store.messages).length === 0) {
                 const messageId = 1;
@@ -91,9 +103,11 @@ export default function chatReducer(store = initialStore, action) {
                     },
                     messages: {
                         $merge: {
-                            ...store.messages, [messageId]: {author: action.sender, text: action.senderText}
+                            ...store.messages,
+                            [messageId]: {author: action.sender, text: action.senderText, focused: false}
                         }
-                    }
+                    },
+                    inputText: {$set: ''}
                 });
             }
             const sender = (action.sender !== 'robot') ? action.sender : 'robot';
@@ -125,8 +139,69 @@ export default function chatReducer(store = initialStore, action) {
                 },
                 messages: {
                     $merge: {
-                        ...store.messages, [messageId]: {author: action.sender, text: action.senderText}
+                        ...store.messages, [messageId]: {author: action.sender, text: action.senderText, focused: false}
                     }
+                },
+                inputText: {$set: ''}
+            });
+        }
+        case EDIT_MESSAGE: {
+            Object.keys(store.messages).map(messageId => {
+                store.messages[messageId].focused = false;
+            });
+            return update(store, {
+                hiddenEditButton: {$set: false},
+                textEditMessage: {
+                    $set: {
+                        chatId: action.chatId,
+                        messageId: action.messageId,
+                        author: action.author,
+                        text: action.text
+                    }
+                },
+                messages: {
+                    $merge: {
+                        ...store.messages, [action.messageId]: {author: action.author, text: action.text, focused: true}
+                    }
+                },
+                inputText: {$set: action.text}
+            });
+        }
+        case CONFIRM_EDIT_MESSAGE: {
+            return update(store, {
+                hiddenEditButton: {$set: true},
+                messages: {
+                    $merge: {
+                        ...store.messages,
+                        [action.messageId]: {author: action.author, text: action.text, focused: false}
+                    }
+                },
+                textEditMessage: {
+                    $set: {}
+                },
+                inputText: {$set: ''}
+            });
+        }
+        case REMOVE_MESSAGE: {
+            const newMessagesStore = () => {
+                store.chats[action.chatId].messageList.map(mId => {
+                    if (mId == action.messageId) {
+                        delete store.messages[action.messageId];
+                    }
+                });
+                return store.messages;
+            };
+            const newChatStore = () => {
+                const filteredList = store.chats[action.chatId].messageList.filter(mId => mId !== action.messageId);
+                store.chats[action.chatId].messageList = filteredList;
+                return store.chats;
+            };
+            return update(store, {
+                chats: {
+                    $merge: newChatStore()
+                },
+                messages: {
+                    $merge: newMessagesStore()
                 }
             });
         }

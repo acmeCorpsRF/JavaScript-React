@@ -20,6 +20,11 @@ form {
   padding: 10px 86px 10px 10px;
   background-color: #ffffff;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
+
+  .hidden-btn {
+    display: none;
+  }
+
 }
 
 .output-field {
@@ -66,9 +71,13 @@ form {
 
 }
 
-.send-message {
+.send-message-btn, .edit-message-btn {
   position: absolute !important;
   top: 10px;
   right: 10px;
   height: 56px;
+}
+
+.edit-message-btn:hover svg {
+  fill: #ffffff;
 }

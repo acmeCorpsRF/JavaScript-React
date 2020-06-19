@@ -18,7 +18,7 @@ export default class Layout extends Component {
         const incomingParams = Number(this.props.match.params.chatId);
         return (
             <div className="wrapper">
-                <Header/> {/*зависимость {user, userSocialActivity}*/}
+                <Header/>
                 <Aside url={this.props.match.url}/>
                 <MessageField chatId={incomingParams ? incomingParams : this.props.chatId}/>
             </div>

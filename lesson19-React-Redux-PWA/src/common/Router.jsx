@@ -19,7 +19,7 @@ class Router extends Component {
     }
 
     render() {
-        const {chats, profileLoad} = this.props;
+        const {chats} = this.props;
         if (Object.keys(chats).length == 0) {
             return (
                 <Switch>
